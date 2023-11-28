@@ -28,7 +28,7 @@ shinyModuleUserInterface <- function(id, label) {
   # showcase to access a file ('auxiliary files') that is 
   # a) provided by the app-developer and 
   # b) can be overridden by the workflow user.
-  fileName <- paste0(getAppFilePath("yourLocalFileSettingId"), "makgadikgadi_pan_20161101_20170423.shp")
+  fileName <- paste0(getAppFilePath("yourLocalFileSettingId"), "polygons.shp")
 
   # load polygons
   polygons <- read_sf(fileName)
@@ -82,7 +82,7 @@ shinyModule <- function(input, output, session, data) {
   current <- reactiveVal(data)
   
   # load polygons
-  fileName <- paste0(getAppFilePath("yourLocalFileSettingId"), "makgadikgadi_pan_20161101_20170423.shp")
+  fileName <- paste0(getAppFilePath("yourLocalFileSettingId"), "polygons.shp")
   polygons <- read_sf(fileName)
 
   # filter polygons
