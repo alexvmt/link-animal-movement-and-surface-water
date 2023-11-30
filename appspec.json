@@ -1,6 +1,13 @@
 {
   "version": "1.1",
-  "settings": [],
+  "settings": [
+    {
+      "id": "polygons",
+      "name": "polygons",
+      "description": "Files for plotting water polygons. The App expects files with the exact names: 1. `polygons.cpg`, 2. `polygons.dbf`, 3. `polygons.prj`, 4. `polygons.shp`, 5. `polygons.shx`.",
+      "type": "LOCAL_FILE"
+    }
+  ],
   "dependencies": {
     "R": [
       {
