@@ -5,6 +5,7 @@ library("shinyWidgets")
 library("dplyr")
 library("leaflet")
 library("leaflet.extras")
+library("leafem")
 library("RColorBrewer")
 
 # to display messages to the user in the log file of the App in MoveApps
@@ -208,6 +209,8 @@ shinyModule <- function(input, output, session, data) {
                        baseGroups = c("StreetMap", "Aerial"),
                        overlayGroups = c("ROI", "Water", "Tracks", "Start", "End"),
                        options = layersControlOptions(collapsed = FALSE)) %>% 
+      hideGroup(c("Start", "End")) %>% 
+      leafem::addMouseCoordinates() %>% 
       addRectangles(lng1 = min_long,
                     lat1 = max_lat,
                     lng2 = max_long,
