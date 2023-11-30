@@ -1,13 +1,6 @@
 {
   "version": "1.1",
-  "settings": [
-    {
-      "id": "yourLocalFileSettingId",
-      "name": "Personalization",
-      "description": "You can personalize the dashboard by providing a file named 'sample.txt'",
-      "type": "LOCAL_FILE"
-    }
-  ],
+  "settings": [],
   "dependencies": {
     "R": [
       {
@@ -18,16 +11,29 @@
       },
       {
         "name": "sf"
+      },
+      {
+        "name": "shinyWidgets"
+      },
+      {
+        "name": "dplyr"
+      },
+      {
+        "name": "leaflet"
+      },
+      {
+        "name": "leaflet.extras"
+      },
+      {
+        "name": "leafem"
+      },
+      {
+        "name": "RColorBrewer"
       }
     ]
   },
   "createsArtifacts": true,
-  "providedAppFiles": [
-    {
-      "settingId": "yourLocalFileSettingId",
-      "from": "data/local_app_files/provided-app-files/yourLocalFileSettingId/"
-    }
-  ],
+  "providedAppFiles": [],
   "license": {
     "key": "MIT"
   },
@@ -38,10 +44,10 @@
   ],
   "people": [
     {
-      "firstName": "Charles",
-      "middleInitials": null,
-      "lastName": "Darwin",
-      "email": "creator@example.com",
+      "firstName": "Alexander",
+      "middleInitials": "V",
+      "lastName": "Merdian-Tarko",
+      "email": "alexander.merdian-tarko@posteo.de",
       "roles": [
         "author",
         "creator"
@@ -51,17 +57,6 @@
       "affiliationRor": null
     }
   ],
-  "funding": [
-    {
-      "name": "funder name",
-      "comment": "grant for App"
-    }
-  ],
-  "references": [
-    {
-      "type": "IsDescribedBy",
-      "note": "Darwin, C. 1900. The creation. Journal XY. 1-2",
-      "url": "https://anylink.xyz"
-    }
-  ]
+  "funding": [],
+  "references": []
 }
