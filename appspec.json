@@ -32,7 +32,7 @@
       }
     ]
   },
-  "createsArtifacts": true,
+  "createsArtifacts": false,
   "providedAppFiles": [],
   "license": {
     "key": "MIT"
