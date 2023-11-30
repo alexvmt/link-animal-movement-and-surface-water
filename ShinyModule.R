@@ -1,12 +1,11 @@
 library("shiny")
 library("move2")
 library("sf")
-library(shinyWidgets)
-library(dplyr)
-library(leaflet)
-library(leaflet.extras)
-library(RColorBrewer)
-library(DT)
+library("shinyWidgets")
+library("dplyr")
+library("leaflet")
+library("leaflet.extras")
+library("RColorBrewer")
 
 # to display messages to the user in the log file of the App in MoveApps
 # one can use the function from the src/common/logger.R file:
@@ -40,37 +39,34 @@ shinyModuleUserInterface <- function(id, label) {
     titlePanel("Link Animal Movement and Surface Water"),
     fluidRow(
       column(1,
+             selectInput(ns("individual"),
+                         "Individual",
+                         choices = c("all")),
+             style = "z-index:1002;"),
+      column(1,
              numericInput(ns("lag"),
                           "Lag",
                           default_lag,
                           min = limit_lower_lag,
-                          max = limit_upper_lag
-             )
-      ),
+                          max = limit_upper_lag)),
       column(1,
              numericInput(ns("lead"),
                           "Lead",
                           default_lead,
                           min = limit_lower_lead,
-                          max = limit_upper_lead
-             )
-      ),
-      column(10,
-             sliderTextInput(
-               inputId = ns("date"),
-               label = "Date",
-               grid = TRUE,
-               force_edges = TRUE,
-               choices = dates,
-               selected = dates[1],
-               width = "100%"
-             )
-      )
+                          max = limit_upper_lead)),
+      column(9,
+             sliderTextInput(ns("date"),
+                             "Date",
+                             grid = TRUE,
+                             force_edges = TRUE,
+                             choices = dates,
+                             selected = dates[1],
+                             width = "100%"))
     ),
     fluidRow(
       column(12,
-             leafletOutput(ns("map"))
-      )
+             leafletOutput(ns("map")))
     )
   )
 }
@@ -80,6 +76,22 @@ shinyModule <- function(input, output, session, data) {
   # all IDs of UI functions need to be wrapped in ns()
   ns <- session$ns
   current <- reactiveVal(data)
+  
+  # get values for individual dropdown
+  observe({
+    
+    # wait until the data is loaded
+    if (is.null(data)) return()
+    unique_individuals <- sort(as.character(unique(mt_track_id(data))))
+    keys <- c(unique_individuals, "all")
+    values <- c(unique_individuals, "all")
+    key_value_list <- setNames(values, keys)
+    updateSelectInput(session,
+                      "individual",
+                      choices = key_value_list,
+                      selected = c("all" = "all"))
+    
+  })
   
   # load polygons
   fileName <- paste0(getAppFilePath("yourLocalFileSettingId"), "polygons.shp")
@@ -120,12 +132,24 @@ shinyModule <- function(input, output, session, data) {
     # load reactive data
     data_processed <- rctv_data_processed()
     
+    # filter data according to selected individual
+    if(input$individual != "all") {
+      
+      data_processed_filtered <- data_processed %>% 
+        filter(individuals == input$individual)
+      
+    } else {
+      
+      data_processed_filtered <- data_processed
+      
+    }
+    
     # get min and max date (cast dates to date type because we subtract lag/add lead)
     min_date <- as.Date(input$date) - input$lag
     max_date <- as.Date(input$date) + input$lead
     
     # filter data according to defined date range
-    data_processed_filtered <- data_processed %>% 
+    data_processed_filtered <- data_processed_filtered %>% 
       mutate(date = as.Date(timestamps)) %>% 
       filter(between(date, min_date, max_date))
     
@@ -176,19 +200,21 @@ shinyModule <- function(input, output, session, data) {
     map <- leaflet() %>% 
       addTiles() %>% 
       addScaleBar(position = "topleft") %>% 
-      addProviderTiles("Esri.WorldTopoMap", group = "TopoMap") %>% 
-      addProviderTiles("Esri.WorldImagery", group = "Aerial") %>% 
-      addLayersControl(position = "topleft", baseGroups = c("StreetMap", "Aerial"),
+      addProviderTiles("Esri.WorldTopoMap",
+                       group = "TopoMap") %>% 
+      addProviderTiles("Esri.WorldImagery",
+                       group = "Aerial") %>% 
+      addLayersControl(position = "topleft",
+                       baseGroups = c("StreetMap", "Aerial"),
                        overlayGroups = c("ROI", "Water", "Tracks", "Start", "End"),
                        options = layersControlOptions(collapsed = FALSE)) %>% 
-      addRectangles(
-        lng1 = min_long,
-        lat1 = max_lat,
-        lng2 = max_long,
-        lat2 = min_lat,
-        color = "black",
-        fillColor = "transparent",
-        group = "ROI")
+      addRectangles(lng1 = min_long,
+                    lat1 = max_lat,
+                    lng2 = max_long,
+                    lat2 = min_lat,
+                    color = "black",
+                    fillColor = "transparent",
+                    group = "ROI")
     
     # add polygons to map
     map <- map %>%
@@ -240,12 +266,16 @@ shinyModule <- function(input, output, session, data) {
       
     }
     
-    # add legend
-    map <- map %>%
-      addLegend(position = "topright",
-                colors = individual_colors,
-                opacity = legend_opacity,
-                labels = individuals)
+    # add legend if all individuals are selected
+    if (input$individual == "all") {
+      
+      map <- map %>%
+        addLegend(position = "topright",
+                  colors = individual_colors,
+                  opacity = legend_opacity,
+                  labels = individuals)
+      
+    }
     
     map
     
