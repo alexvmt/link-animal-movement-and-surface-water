@@ -67,16 +67,6 @@
       ],
       "Hash": "5ea2700d21e038ace58269ecdbeb9ec0"
     },
-    "askpass": {
-      "Package": "askpass",
-      "Version": "1.1",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "sys"
-      ],
-      "Hash": "e8a22846fff485f0be3770c2da758713"
-    },
     "assertthat": {
       "Package": "assertthat",
       "Version": "0.2.1",
@@ -325,7 +315,7 @@
       "Package": "fs",
       "Version": "1.6.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "methods"
@@ -554,9 +544,11 @@
       "Requirements": [
         "R",
         "R6",
-        "crayon",
-        "hms",
-        "prettyunits"
+        "Rcpp",
+        "later",
+        "magrittr",
+        "rlang",
+        "stats"
       ],
       "Hash": "f4625e061cb2865f111b47ff163a5ca6"
     },
@@ -575,21 +567,6 @@
         "stats"
       ],
       "Hash": "0d8a15c9d000970ada1ab21405387dee"
-    },
-    "promises": {
-      "Package": "promises",
-      "Version": "1.2.0.1",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "R6",
-        "Rcpp",
-        "later",
-        "magrittr",
-        "rlang",
-        "stats"
-      ],
-      "Hash": "4ab2c43adb4d4699cf3690acd378d75d"
     },
     "proxy": {
       "Package": "proxy",
@@ -659,20 +636,6 @@
         "rlang"
       ],
       "Hash": "168f9353c76d4c4b0a0bbf72e2c2d035"
-    },
-    "sass": {
-      "Package": "sass",
-      "Version": "0.4.6",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "R6",
-        "fs",
-        "htmltools",
-        "rappdirs",
-        "rlang"
-      ],
-      "Hash": "cc3ec7dd33982ef56570229b62d6388e"
     },
     "sf": {
       "Package": "sf",
